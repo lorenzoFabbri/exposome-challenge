@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Lorenzo",
            family = "Fabbri",
            role = c("aut", "cre"),
-           email = "lorenzo_fabbri92@icloud.com"
+           email = "lorenzo_fabbri92@icloud.com")
 Description: Code for the ISGlobal Exposome Challenge 2021.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to
     pick a license
