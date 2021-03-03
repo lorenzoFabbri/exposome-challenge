@@ -1,6 +1,6 @@
 #' Function to run multiple GLMs
 #'
-#' Function to run multiple GLMs of the form signature ~ condition.
+#' Function to run multiple GLMs of the form condition ~ signature.
 #'
 #' @import Biobase
 #' @import dplyr
@@ -20,21 +20,26 @@ runMulRegressionSig <- function(signatures, exposome, formula, family) {
   for (signature in colnames(signatures)[2:ncol(signatures)]) {
     # Create temporary data.frame
     f <- unlist(strsplit(formula, " "))
-    condition <- f[2]
-    if (length(f)==2) { # No covariates to asjust for
+    condition <- f[1]
+
+    if (length(f)==2) { # No covariates to adjust for
       dat <- merge(signatures[, c("ID", signature)],
                    p[, c("ID", condition)])
+
+      new.formula <- paste(condition, "~", signature)
     } else {
       covariates <- f[seq(4, length(f), 2)]
       dat <- merge(signatures[, c("ID", signature)],
                    p[, c("ID", condition, covariates)])
+
+      new.formula <- paste(condition, "~", signature, "+", covariates)
     }
 
-    model <- exposomeChallenge::runRegressionSig(dat, formula, family)
+    model <- exposomeChallenge::runRegressionSig(dat, new.formula, family)
     summ <- summary(model)
     pval.condition <- summ$coefficients[2, 4]
 
-    # Store p-value in data.frame
+    # Store p-values in data.frame
     results[signature, condition] <- pval.condition
   }
 

@@ -7,5 +7,5 @@
 runMulRegressionSig(signatures, exposome, formula, family)
 }
 \description{
-Function to run multiple GLMs of the form signature ~ condition.
+Function to run multiple GLMs of the form condition ~ signature.
 }

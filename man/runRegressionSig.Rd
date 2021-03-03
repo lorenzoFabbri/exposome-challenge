@@ -7,5 +7,5 @@
 runRegressionSig(dat, formula, family)
 }
 \description{
-Function to run single GLM of the form signature ~ condition.
+Function to run single GLM of the form condition ~ signature.
 }

@@ -1,6 +1,8 @@
 ---
 title: "ISGlobal Exposome Challenge 2021"
 output: html_notebook
+editor_options:
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -22,13 +24,15 @@ Perform MWAS:
 ```{r}
 res <- exposomeChallenge::runMulRegressionSig(signatures = met_serum, 
                                               exposome = exposome, 
-                                              formula = "~ hs_zbmi_who", 
+                                              formula = "hs_zbmi_who ~", 
                                               family = "gaussian")
 # Apply correction for multiple testing
-p.adjusted <- as.data.frame(p.adjust(res[, 1], method = "fdr"))
+p.adjusted <- as.data.frame(p.adjust(res[, 1], method = "bonferroni"))
 names(p.adjusted) <- "p.adjusted"
 rownames(p.adjusted) <- rownames(res)
 
-p.adjusted %>%
+to_keep <- p.adjusted %>%
   filter(p.adjusted <= 0.05)
+print(dim(to_keep))
+print(to_keep)
 ```
