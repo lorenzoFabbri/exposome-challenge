@@ -1,4 +1,6 @@
 #' Function to load data and create ExposomeSet object
+#'
+#' @import rexposome
 #' @export
 
 loadExpData <- function() {
@@ -21,10 +23,10 @@ loadExpData <- function() {
   exposome <- exposome[, keep]
   codebook <- codebook[keep, ]
 
-  exp <- loadExposome(exposures = exposome,
-                      description = codebook,
-                      phenotype = phenotype,
-                      description.famCol = "family")
+  exp <- rexposome::loadExposome(exposures = exposome,
+                                 description = codebook,
+                                 phenotype = phenotype,
+                                 description.famCol = "family")
 
   return(list(exp = exp,
               serum = metabol_serum,

@@ -1,0 +1,34 @@
+---
+title: "ISGlobal Exposome Challenge 2021"
+output: html_notebook
+---
+
+```{r}
+library(exposomeChallenge)
+library(ggplot2)
+```
+
+
+Load datasets:
+```{r}
+dat <- exposomeChallenge::loadExpData()
+
+exposome <- dat$exp
+met_serum <- dat$serum
+met_urine <- dat$urine
+```
+
+Perform MWAS:
+```{r}
+res <- exposomeChallenge::runMulRegressionSig(signatures = met_serum, 
+                                              exposome = exposome, 
+                                              formula = "~ hs_zbmi_who", 
+                                              family = "gaussian")
+# Apply correction for multiple testing
+p.adjusted <- as.data.frame(p.adjust(res[, 1], method = "fdr"))
+names(p.adjusted) <- "p.adjusted"
+rownames(p.adjusted) <- rownames(res)
+
+p.adjusted %>%
+  filter(p.adjusted <= 0.05)
+```
